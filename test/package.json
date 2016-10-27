@@ -1,0 +1,9 @@
+{
+  "name": "serial-test",
+  "version": "1.0.0",
+  "author": "Rob Huehn <rob@theatersoft.com>",
+  "scripts": {
+    "debug-evolution": "node --inspect=10000 --debug-brk evolution.js",
+    "evolution": "node evolution.js"
+  }
+}
