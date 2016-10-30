@@ -66,18 +66,18 @@ function send () {
 export default class {
     start ({name, config}) {
         return bus.registerObject(name, this)
-        .then(() => {
-            serialCommand = new SerialCommand(
-            config.port,
-            config.speed
-        )
-            .on('open', send)
-            .on('error', err => {
-                model.FailCount++
-                model.LastError = err
-                console.log(err)
+            .then(() => {
+                serialCommand = new SerialCommand(
+                    config.port,
+                    config.speed
+                )
+                    .on('open', send)
+                    .on('error', err => {
+                        model.FailCount++
+                        model.LastError = err
+                        console.log(err)
+                    })
             })
-        })
     }
 }
 

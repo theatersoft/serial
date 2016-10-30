@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "author": "Rob Huehn <rob@theatersoft.com>",
   "scripts": {
-    "debug-evolution": "node --inspect=10000 --debug-brk evolution.js",
-    "evolution": "node evolution.js"
+    "_debug": "npm run _test -- --inspect --debug-brk",
+    "_test": "BUS=`[ -f .bus ] && cat .bus` AUTH=`[ -f .auth ] && cat .auth` node",
+    "debug-evolution": "npm run _debug -- evolution.js",
+    "evolution": "npm run _test -- evolution.js",
+    "start-projector": "npm run _test -- start-projector.js",
+    "debug-start-projector": "npm run _debug -- start-projector.js",
+    "projector-hours": "npm run _test -- projector-hours.js",
+    "projector-on": "npm run _test -- projector-on.js",
+    "projector-off": "npm run _test -- projector-off.js"
   }
 }
