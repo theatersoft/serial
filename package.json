@@ -14,7 +14,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@theatersoft/bus": "~1",
-    "serialport": "^3.1.2"
+    "serialport": "~4"
   },
   "devDependencies": {
     "babel-preset-babili": "0.0.3",

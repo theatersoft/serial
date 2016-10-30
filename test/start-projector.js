@@ -2,14 +2,14 @@
 
 const
     bus = require('@theatersoft/bus').default,
-    service = {
+    options = {
         module: '@theatersoft/serial',
         export: 'SerialDevice',
         name: 'Projector',
         config: {
             settings: {
                 port: '/dev/ttyUSB0',
-                speed: '9600'
+                speed: 9600
             },
             commands: {
                 "on": "* 0 IR 001\r",
@@ -20,7 +20,7 @@ const
                 "hours": "* 0 Lamp\r"
             }
         }
-    }
+    },
+    service = require(options.module)[options.export]
 
-bus.start().then(() =>
-    new (require(service.module)[service.export])().start(service))
+bus.start().then(() => new service().start(options))

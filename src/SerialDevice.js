@@ -2,10 +2,9 @@ import bus from '@theatersoft/bus'
 import SerialCommand from './SerialCommand'
 
 export default class {
-    start ({name, config}) {
+    start ({name, config: {settings, commands}}) {
         const
-            {settings: {port, speed}, commands} = config,
-            serial = new SerialCommand(port, speed, true)
+            serial = new SerialCommand(settings)
                 .on('open', () => {
                     console.log(name, 'Port open')
                 })

@@ -2,12 +2,19 @@
 
 const
     bus = require('@theatersoft/bus').default,
-    service = {
+    options = {
         module: '@theatersoft/serial',
         export: 'Evolution',
         name: 'Hvac',
-        config: {port: '/dev/evolution', speed: '9600'}
-    }
+        config: {
+            settings: {
+                port: '/dev/evolution',
+                speed: 9600,
+                delimiter: '\r\n'
+            }
+        }
+    },
+    service = require(options.module)[options.export]
 
 bus.start().then(() =>
-    new (require(service.module)[service.export])().start(service))
+    new service().start(options))

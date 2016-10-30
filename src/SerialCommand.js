@@ -1,22 +1,20 @@
-import serialPort from 'serialport'
+import SerialPort from 'serialport'
 import {EventEmitter} from '@theatersoft/bus'
 
 class SerialCommand extends EventEmitter {
-    constructor (port, speed, raw, strict) {
+    constructor ({port, speed, delimiter = '\r', raw = false}) {
         super()
         this.q = []
-        this.term = raw ? '' : '\r\n'
-        this.strict = strict
-        this.serialPort = new serialPort.SerialPort(port, {
+        this.serialPort = new SerialPort(port, {
             baudrate: speed,
-            parser: raw ? serialPort.parsers.raw : serialPort.parsers.readline(this.term)
+            parser: raw ? SerialPort.parsers.raw : SerialPort.parsers.readline(delimiter)
         })
             .on('open', () => this.emit('open'))
             .on('error', err => this.emit('error', err))
             .on('data', res => {
                 if (this.q.length) {
                     const cb = this.q.shift().cb
-                    if (!strict) this.cb = cb
+                    this.cb = cb
                     if (cb)
                         cb(res)
                     else
@@ -27,7 +25,7 @@ class SerialCommand extends EventEmitter {
                     this.emit('error', new Error('Unexpected response: ' + res))
 
                 if (this.q.length)
-                    this.serialPort.write(this.q[0].cmd + this.term)
+                    this.serialPort.write(this.q[0].cmd)
             })
     }
 
@@ -35,7 +33,7 @@ class SerialCommand extends EventEmitter {
         this.q.push({cmd, cb})
 
         if (this.q.length === 1)
-            this.serialPort.write(cmd + this.term)
+            this.serialPort.write(cmd)
     }
 }
 

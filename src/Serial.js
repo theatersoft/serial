@@ -1,7 +1,7 @@
 import bus from '@theatersoft/bus'
 
 export default class Serial {
-    constructor (config) {
+    start () {
     }
 }
 

@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "author": "Rob Huehn <rob@theatersoft.com>",
   "scripts": {
-    "_debug": "npm run _test -- --inspect --debug-brk",
-    "_test": "BUS=`[ -f .bus ] && cat .bus` AUTH=`[ -f .auth ] && cat .auth` node",
-    "debug-evolution": "npm run _debug -- evolution.js",
-    "evolution": "npm run _test -- evolution.js",
-    "start-projector": "npm run _test -- start-projector.js",
-    "debug-start-projector": "npm run _debug -- start-projector.js",
-    "projector-hours": "npm run _test -- projector-hours.js",
-    "projector-on": "npm run _test -- projector-on.js",
-    "projector-off": "npm run _test -- projector-off.js"
+    "BUS": "BUS=`[ -f .bus ] && cat .bus` AUTH=`[ -f .auth ] && cat .auth`",
+    "DEBUG": "npm run BUS -- node --inspect=9400 --debug-brk",
+    "RUN": "npm run BUS -- node",
+    "debug-evolution": "npm run DEBUG -- evolution.js",
+    "evolution": "npm run RUN -- evolution.js",
+    "start-projector": "npm run RUN -- start-projector.js",
+    "debug-start-projector": "npm run DEBUG -- start-projector.js",
+    "projector-hours": "npm run RUN -- projector-hours.js",
+    "projector-on": "npm run RUN -- projector-on.js",
+    "projector-off": "npm run RUN -- projector-off.js"
   }
 }
