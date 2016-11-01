@@ -7,6 +7,7 @@
     "build": "time -p node build.js && ls -l dist",
     "build:dist": "DIST=true npm run build",
     "link": "npm link; npm link @theatersoft/serial @theatersoft/bus",
+    "publish": "node build.js publish",
     "bus:start": "npm explore @theatersoft/bus -- npm run start",
     "watch": "node build.js watch"
   },

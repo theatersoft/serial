@@ -47,7 +47,7 @@ export default class {
                     && res.indexOf(command.slice(0, cmdlen)) === 0
                     && res[cmdlen] === ':'
                 ) {
-                    res = res.slice(cmdlen).split(delim)[0]
+                    res = res.slice(cmdlen + 1).split(delim)[0]
 
                     if (!res.indexOf('NAK'))
                         model.NakCount++
