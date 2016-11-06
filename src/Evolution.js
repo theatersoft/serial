@@ -57,7 +57,7 @@ export default class {
                         if (!index) {
                             model.SuccessCount++
                             model.LastUpdate = new Date().toString()
-                            console.log(model)
+                            //console.log(model)
                             bus.signal('/Hvac.data', model)
                         }
                     }
