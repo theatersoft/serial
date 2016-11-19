@@ -22,20 +22,17 @@ const
     ],
     delim = /[%\uFFFD]/
 
-// static for rpc
-let
-    model = {
-        LastUpdate: '',
-        SuccessCount: 0,
-        FailCount: 0,
-        NakCount: 0,
-        LastError: ''
-    },
-    index = 0
-
 export default class {
     start ({name, config: {settings}}) {
-        let serial
+        let serial,
+            model = {
+                LastUpdate: '',
+                SuccessCount: 0,
+                FailCount: 0,
+                NakCount: 0,
+                LastError: ''
+            },
+            index = 0
         const send = () => {
             const
                 command = `S1${readKeys[index]}?\r\n`,
@@ -78,11 +75,5 @@ export default class {
             })
 
         return bus.registerObject(name, this)
-    }
-}
-
-export const rpc = {
-    get () {
-        return model
     }
 }
