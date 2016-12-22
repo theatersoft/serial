@@ -13,8 +13,11 @@ export default class {
                 }),
             makeCommand = (cmd, data) => () => {
                 console.log(name, 'send', cmd, data)
-                serial.send(data, res => {
-                    console.log(name, 'response', res)
+                return new Promise(resolve => {
+                    serial.send(data, res => {
+                        console.log(name, 'response', res)
+                        resolve(res)
+                    })
                 })
             }
         for (const cmd in commands)

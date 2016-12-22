@@ -4,11 +4,11 @@ const
     bus = require('@theatersoft/bus').default,
     options = {
         module: '@theatersoft/serial',
-        export: 'SerialDevice',
+        export: 'Projector',
         name: 'Projector',
         config: {
             settings: {
-                port: '/dev/ttyUSB0',
+                port: '/dev/ttyUSB1',
                 speed: 9600
             },
             commands: {

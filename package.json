@@ -1,6 +1,6 @@
 {
   "name": "@theatersoft/serial",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/serial.js",
   "scripts": {
@@ -18,9 +18,11 @@
     "serialport": "~4"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-preset-babili": "0.0.3",
     "rollup": "^0.36.0",
     "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "shelljs": "^0.7.4",
     "watch": "^1.0.1"
   }
