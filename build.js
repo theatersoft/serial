@@ -2,6 +2,8 @@
 require('shelljs/make')
 
 const
+    pkg = require('./package.json'),
+    name = pkg.name.startsWith('@theatersoft') && pkg.name.slice(13),
     DIST = process.env.DIST === 'true',
     path = require('path'),
     fs = require('fs'),
@@ -9,7 +11,8 @@ const
     rollup = require('rollup'),
     nodeResolve = require('rollup-plugin-node-resolve'),
     babel = require('rollup-plugin-babel'),
-    pkg = require('./package.json')
+    ignore = require('rollup-plugin-ignore'),
+    strip = require('rollup-plugin-strip')
 
 const targets = {
     node () {
@@ -17,7 +20,12 @@ const targets = {
         exec('mkdir -p dist')
         rollup.rollup({
                 entry: 'src/index',
-                external: Object.keys(pkg.dependencies),
+                external: [
+                    'redux',
+                    !DIST && 'remote-redux-devtools',
+                    'util',
+                    ...Object.keys(pkg.dependencies)
+                ],
                 plugins: [
                     babel({
                         babelrc: false,
@@ -45,35 +53,20 @@ const targets = {
                             require("babel-plugin-transform-undefined-to-void")
                         ] : [])
                     }),
-                    nodeResolve()
+                    nodeResolve(),
+                    DIST && ignore(['remote-redux-devtools']),
+                    DIST && strip({functions: ['devToolsEnhancer']})
                 ]
             })
             .then(bundle => {
                 bundle.write({
-                        dest: 'dist/serial.js',
+                        dest: `dist/${name}.js`,
                         format: 'cjs',
-                        moduleName: 'serial',
+                        moduleName: name,
                         banner: copyright,
                         sourceMap: DIST ? false : 'inline'
                     })
-                    .then(() => console.log('wrote dist/serial.js'))
-            })
-    },
-
-    watch () {
-        require('watch')
-            .watchTree('src', (f, curr, prev) => {
-                if (typeof f === "object" && prev === null && curr === null) {
-                    // Finished walking the tree
-                } else if (prev === null) {
-                    // f is a new file
-                } else if (curr.nlink === 0) {
-                    // f was removed
-                } else {
-                    // f was changed
-                    console.log(f)
-                    targets.node()
-                }
+                    .then(() => console.log(`wrote dist/${name}.js`))
             })
     },
 

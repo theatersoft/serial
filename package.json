@@ -8,8 +8,7 @@
     "build:dist": "DIST=true npm run build",
     "link": "npm link; npm link @theatersoft/serial @theatersoft/bus",
     "publish": "node build.js publish",
-    "bus:start": "npm explore @theatersoft/bus -- npm run start",
-    "watch": "node build.js watch"
+    "bus:start": "npm explore @theatersoft/bus -- npm run start"
   },
   "author": "Rob Huehn <rob@theatersoft.com>",
   "license": "AGPL-3.0",
@@ -20,10 +19,13 @@
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-preset-babili": "0.0.3",
+    "redux": "^3.6.0",
+    "remote-redux-devtools": "^0.5.7",
     "rollup": "^0.36.0",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "shelljs": "^0.7.4",
-    "watch": "^1.0.1"
+    "rollup-plugin-ignore": "^1.0.3",
+    "rollup-plugin-strip": "^1.1.1",
+    "shelljs": "^0.7.4"
   }
 }
