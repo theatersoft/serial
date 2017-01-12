@@ -5,9 +5,9 @@ export default function reducer (state, action) {
     case INIT_DEVICE:
         return {...state, device: action.device, value: false}
     case ON:
-        return {...state, value: true, action: off()}
+        return {...state, value: true}
     case OFF:
-        return {...state, value: false, action: on()}
+        return {...state, value: false}
     }
     return state
 }
