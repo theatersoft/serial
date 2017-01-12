@@ -17,6 +17,7 @@ export default class extends SerialDevice {
                 this.store.dispatch(initDevice({name}))
                 this.store.subscribe(() =>
                     bus.signal(`/${name}.state`, this.store.getState()))
+                bus.proxy('Device').registerService(name)
             })
     }
 
