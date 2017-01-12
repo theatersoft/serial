@@ -1,4 +1,5 @@
 import {createStore} from 'redux'
+import devToolsEnhancer from 'remote-redux-devtools'
 import {INIT_DEVICE, ON, on, OFF, off} from './actions'
 
 function reducer (state, action) {
