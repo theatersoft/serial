@@ -6,27 +6,27 @@ import bus from '@theatersoft/bus'
 import {initDevice, command} from './actions'
 
 export default class extends SerialDevice {
-    start ({name, config: {settings, commands}}) {
+    start ({name, config: {settings, commands, remotedev = 'localhost'}}) {
         this.store = createStore(
             reducer,
             {},
-            devToolsEnhancer({name: 'Projector', realtime: true, port: 6400})
+            devToolsEnhancer({name: 'Projector', realtime: true, port: 6400, hostname: remotedev})
         )
         return super.start({name, config: {settings, commands}})
             .then(() => {
-                store.dispatch(initDevice({name}))
-                store.subscribe(() =>
-                    bus.signal(`/${name}.state`, store.getState()))
+                this.store.dispatch(initDevice({name}))
+                this.store.subscribe(() =>
+                    bus.signal(`/${name}.state`, this.store.getState()))
             })
     }
 
     dispatch (action) {
         return this[command(action)]()
             .then(() =>
-                store.dispatch(action))
+                this.store.dispatch(action))
     }
 
     getState () {
-        return store.getState()
+        return this.store.getState()
     }
 }
