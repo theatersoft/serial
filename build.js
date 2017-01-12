@@ -53,9 +53,9 @@ const targets = {
                             require("babel-plugin-transform-undefined-to-void")
                         ] : [])
                     }),
-                    nodeResolve(),
                     DIST && ignore(['remote-redux-devtools']),
-                    DIST && strip({functions: ['devToolsEnhancer']})
+                    DIST && strip({functions: ['devToolsEnhancer']}),
+                    nodeResolve()
                 ]
             })
             .then(bundle => {
