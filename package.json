@@ -1,6 +1,6 @@
 {
   "name": "@theatersoft/serial",
-  "version": "1.2.0",
+  "version": "1.2.3",
   "description": "",
   "main": "dist/serial.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@theatersoft/bus": "~1",
+    "redux": "^3.6.0",
     "serialport": "~4"
   },
   "devDependencies": {
