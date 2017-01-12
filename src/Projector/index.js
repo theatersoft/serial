@@ -7,6 +7,7 @@ import {initDevice, command} from './actions'
 
 export default class extends SerialDevice {
     start ({name, config: {settings, commands, remotedev = 'localhost'}}) {
+        this.name = name
         this.store = createStore(
             reducer,
             {},
@@ -17,7 +18,9 @@ export default class extends SerialDevice {
                 this.store.dispatch(initDevice({name}))
                 this.store.subscribe(() =>
                     bus.signal(`/${name}.state`, this.store.getState()))
-                bus.proxy('Device').registerService(name)
+                const register = () => bus.proxy('Device').registerService(this.name)
+                bus.registerListener(`/Device.started`, register)
+                register()
             })
     }
 
