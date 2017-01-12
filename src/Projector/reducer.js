@@ -1,8 +1,6 @@
-import {createStore} from 'redux'
-import devToolsEnhancer from 'remote-redux-devtools'
 import {INIT_DEVICE, ON, on, OFF, off} from './actions'
 
-function reducer (state, action) {
+export default function reducer (state, action) {
     switch (action.type) {
     case INIT_DEVICE:
         return {...state, device: action.device, value: false}
@@ -14,8 +12,3 @@ function reducer (state, action) {
     return state
 }
 
-export default createStore(
-    reducer,
-    {},
-    devToolsEnhancer({name: 'Projector', realtime: true, port: 6400})
-)
