@@ -17,7 +17,7 @@ export default class extends SerialDevice {
             .then(() => {
                 this.store.dispatch(initDevice({name}))
                 this.store.subscribe(() =>
-                    bus.signal(`/${name}.state`, {device: this.store.getState()}))
+                    bus.signal(`/${name}.state`, this.store.getState()))
                 const register = () => bus.proxy('Device').registerService(this.name)
                 bus.registerListener(`/Device.started`, register)
                 register()
