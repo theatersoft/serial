@@ -11,13 +11,13 @@ export default class extends SerialDevice {
         this.store = createStore(
             reducer,
             {},
-            devToolsEnhancer({name: 'Projector', realtime: true, port: 6400, hostname: remotedev})
+            devToolsEnhancer({name, realtime: true, port: 6400, hostname: remotedev})
         )
         return super.start({name, config: {settings, commands}})
             .then(() => {
                 this.store.dispatch(initDevice({name}))
                 this.store.subscribe(() =>
-                    bus.signal(`/${name}.state`, this.store.getState()))
+                    bus.signal(`/${name}.state`, {device: this.store.getState()}))
                 const register = () => bus.proxy('Device').registerService(this.name)
                 bus.registerListener(`/Device.started`, register)
                 register()
