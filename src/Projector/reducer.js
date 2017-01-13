@@ -1,13 +1,12 @@
 import {INIT_DEVICE, ON, on, OFF, off} from './actions'
 
-export default function reducer (state, action) {
-    switch (action.type) {
+export default function reducer (state, {type, device}) {
+    switch (type) {
     case INIT_DEVICE:
-        return {...state, device: action.device, value: false}
+        return {...device}
     case ON:
-        return {...state, value: true}
     case OFF:
-        return {...state, value: false}
+        return {...state, value: type === ON}
     }
     return state
 }
