@@ -24,7 +24,8 @@ const
 
 export default function ({settings, store}) {
     let serial,
-        index = 0
+        index = 0,
+        {value} = store.getState()
     const send = () => {
         const
             command = `S1${readKeys[index]}?\r\n`,
@@ -41,11 +42,13 @@ export default function ({settings, store}) {
                 if (!res.indexOf('NAK'))
                     store.dispatch(nak())
                 else {
-                    store.dispatch(setProp(readKeys[index], res))
+                    if (value[readKeys[index]] !== res )
+                        store.dispatch(setProp(readKeys[index], res))
                     index = ++index % readKeys.length
                     if (!index) {
                         store.dispatch(success())
                         store.dispatch(setInfoProp('LastUpdate', new Date().toString()))
+                        value = store.getState().value
                     }
                 }
             } else {

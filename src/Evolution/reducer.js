@@ -3,11 +3,9 @@ import {PROP, INFO, NAK, FAIL, SUCCESS} from './actions'
 export default function reducer (state, action) {
     switch (action.type) {
     case PROP:
-        if (state.value[action.prop] !== action.value)
-            return {...state, value: {...state.value, [action.prop]: action.value}}
-        break
+        return {...state, value: {...state.value, [action.prop]: action.value}}
     case INFO:
-            return {...state, info: {...state.info, [action.prop]: action.value}}
+        return {...state, info: {...state.info, [action.prop]: action.value}}
     case NAK:
     case FAIL:
     case SUCCESS:
