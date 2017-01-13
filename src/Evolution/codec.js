@@ -1,5 +1,5 @@
 import SerialCommand from '../SerialCommand'
-import {setProp, setInfoProp, nak, success, fail} from './actions'
+import {setProp, setInfo, nak, success, fail} from './actions'
 
 const
     readKeys = [
@@ -25,7 +25,7 @@ const
 export default function ({settings, store}) {
     let serial,
         index = 0,
-        {value} = store.getState()
+        {device: {value}} = store.getState()
     const send = () => {
         const
             command = `S1${readKeys[index]}?\r\n`,
@@ -47,13 +47,13 @@ export default function ({settings, store}) {
                     index = ++index % readKeys.length
                     if (!index) {
                         store.dispatch(success())
-                        store.dispatch(setInfoProp('LastUpdate', new Date().toString()))
-                        value = store.getState().value
+                        store.dispatch(setInfo('LastUpdate', new Date().toString()))
+                        value = store.getState().device.value
                     }
                 }
             } else {
                 store.dispatch(fail())
-                store.dispatch(setInfoProp('LastError', res))
+                store.dispatch(setInfo('LastError', res))
 //            console.log('Fail')
             }
             send()
@@ -63,7 +63,7 @@ export default function ({settings, store}) {
         .on('open', send)
         .on('error', err => {
             store.dispatch(fail())
-            store.dispatch(setInfoProp('LastError', err))
+            store.dispatch(setInfo('LastError', err))
             console.log(err)
         })
 }

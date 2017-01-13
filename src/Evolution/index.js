@@ -6,8 +6,8 @@ import devToolsEnhancer from 'remote-redux-devtools'
 import {SUCCESS, NAK, FAIL} from './actions'
 
 const select = getState => () => {
-    const {value} = getState()
-    return {value}
+    const {device} = getState()
+    return {device}
 }
 //const equal = (a, b) => (a === b)
 // selected objects require shallow comparison
@@ -30,7 +30,6 @@ export default class {
         this.store = createStore(
             reducer,
             {
-                name,
                 info: {
                     LastUpdate: '',
                     [SUCCESS]: 0,
@@ -38,14 +37,14 @@ export default class {
                     [FAIL]: 0,
                     LastError: ''
                 },
-                value: {}
+                device: {name, value: {}}
             },
             devToolsEnhancer({name, realtime: true, port: 6400})
         )
         return bus.registerObject(name, this)
             .then(() => {
-                this.store.subscribe(dedup(select(this.store.getState))(device =>
-                    bus.signal(`/${this.name}.state`, {device})))
+                this.store.subscribe(dedup(select(this.store.getState))(state=>
+                    bus.signal(`/${this.name}.state`, state)))
                 codec({settings, store: this.store})
                 const register = () => bus.proxy('Device').registerService(this.name)
                 bus.registerListener(`/Device.started`, register)
@@ -58,6 +57,6 @@ export default class {
     }
 
     getState () {
-        return this.store.getState()
+        return select(this.store.getState)()
     }
 }

@@ -2,7 +2,7 @@ export const
     PROP = 'PROP',
     setProp = (prop, value) => ({type: PROP, prop, value}),
     INFO = 'INFO',
-    setInfoProp = (prop, value) => ({type: INFO, prop, value}),
+    setInfo = (prop, value) => ({type: INFO, prop, value}),
     NAK = 'Nak',
     nak = () => ({type: NAK}),
     FAIL = 'Fail',
