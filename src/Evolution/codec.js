@@ -1,5 +1,6 @@
 import SerialCommand from '../SerialCommand'
-import {setProp, setInfo, nak, success, fail} from './actions'
+import * as actions from './actions'
+import {bindActionCreators} from 'redux'
 
 const
     readKeys = [
@@ -22,17 +23,15 @@ const
     ],
     delim = /[%\uFFFD]/
 
-export default function ({settings, store}) {
+export default function ({settings, store: {dispatch, getState}}) {
     let serial,
-        index = 0,
-        {device: {value}} = store.getState()
+        index = 0
+    const {setProp, setInfo, nak, success, fail} = bindActionCreators(actions, dispatch)
     const send = () => {
         const
             command = `S1${readKeys[index]}?\r\n`,
             cmdlen = command.indexOf('?')
-//    console.log(command)
         serial.send(command, res => {
-//        console.log(res)
             if (res.length > cmdlen
                 && res.indexOf(command.slice(0, cmdlen)) === 0
                 && res[cmdlen] === ':'
@@ -40,21 +39,19 @@ export default function ({settings, store}) {
                 res = res.slice(cmdlen + 1).split(delim)[0]
 
                 if (!res.indexOf('NAK'))
-                    store.dispatch(nak())
+                    nak()
                 else {
-                    if (value[readKeys[index]] !== res )
-                        store.dispatch(setProp(readKeys[index], res))
+                    if (getState().device.value[readKeys[index]] !== res )
+                        setProp(readKeys[index], res)
                     index = ++index % readKeys.length
                     if (!index) {
-                        store.dispatch(success())
-                        store.dispatch(setInfo('LastUpdate', new Date().toString()))
-                        value = store.getState().device.value
+                        success()
+                        setInfo('LastUpdate', new Date().toLocaleString())
                     }
                 }
             } else {
-                store.dispatch(fail())
-                store.dispatch(setInfo('LastError', res))
-//            console.log('Fail')
+                fail()
+                setInfo('LastError', res)
             }
             send()
         })
@@ -62,8 +59,8 @@ export default function ({settings, store}) {
     serial = new SerialCommand(settings)
         .on('open', send)
         .on('error', err => {
-            store.dispatch(fail())
-            store.dispatch(setInfo('LastError', err))
+            fail()
+            setInfo('LastError', err)
             console.log(err)
         })
 }
