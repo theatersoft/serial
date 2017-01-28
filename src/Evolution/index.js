@@ -48,6 +48,7 @@ export default class {
                 codec({settings, store: this.store})
                 const register = () => bus.proxy('Device').registerService(this.name)
                 bus.registerListener(`/Device.started`, register)
+                bus.on('reconnect', register)
                 register()
             })
     }
