@@ -14,12 +14,12 @@ export default class extends SerialDevice {
             devToolsEnhancer({name, realtime: true, port: 6400, hostname})
         )
         return super.start({name, config: {settings, commands}})
-            .then(() => {
+            .then(obj => {
                 this.store.dispatch(initDevice({name}))
                 this.store.subscribe(() =>
-                    bus.signal(`/${name}.state`, this.store.getState()))
+                    obj.signal('state', this.store.getState()))
                 const register = () => bus.proxy('Device').registerService(this.name)
-                bus.registerListener(`/Device.started`, register)
+                bus.registerListener(`Device.start`, register)
                 bus.on('reconnect', register)
                 register()
             })

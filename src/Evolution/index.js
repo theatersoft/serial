@@ -42,12 +42,12 @@ export default class {
             devToolsEnhancer({name, realtime: true, port: 6400})
         )
         return bus.registerObject(name, this)
-            .then(() => {
+            .then(obj => {
                 this.store.subscribe(dedup(select(this.store.getState))(state=>
-                    bus.signal(`/${this.name}.state`, state)))
+                    obj.signal('state', state)))
                 codec({settings, store: this.store})
                 const register = () => bus.proxy('Device').registerService(this.name)
-                bus.registerListener(`/Device.started`, register)
+                bus.registerListener(`Device.start`, register)
                 bus.on('reconnect', register)
                 register()
             })
