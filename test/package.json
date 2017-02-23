@@ -4,7 +4,7 @@
   "author": "Rob Huehn <rob@theatersoft.com>",
   "scripts": {
     "BUS": "BUS=`[ -f .bus ] && cat .bus` AUTH=`[ -f .auth ] && cat .auth`",
-    "DEBUG": "npm run BUS -- node --inspect=9400 --debug-brk",
+    "DEBUG": "npm run BUS -- node --inspect-brk=9400",
     "RUN": "npm run BUS -- node",
     "debug-evolution": "npm run DEBUG -- evolution.js",
     "evolution": "npm run RUN -- evolution.js",
