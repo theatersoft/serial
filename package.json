@@ -1,6 +1,6 @@
 {
   "name": "@theatersoft/serial",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Bus service module for serial devices",
   "repository": "theatersoft/serial",
   "main": "dist/serial.js",
