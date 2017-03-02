@@ -26,12 +26,22 @@ export default class extends SerialDevice {
     }
 
     dispatch (action) {
-        return this[command(action)]()
-            .then(() =>
-                this.store.dispatch(action))
+        return !throttle() && this[command(action)]()
+                .then(() =>
+                    this.store.dispatch(action))
     }
 
     getState () {
         return this.store.getState()
     }
 }
+
+let last = 0
+const delay = 60000,
+    throttle = () => {
+        const
+            now = Date.now(),
+            ret = (now - last) < delay
+        if (!ret) last = now
+        return ret
+    }
