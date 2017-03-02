@@ -4,12 +4,13 @@
   "author": "Rob Huehn <rob@theatersoft.com>",
   "scripts": {
     "BUS": "BUS=`[ -f .bus ] && cat .bus` AUTH=`[ -f .auth ] && cat .auth`",
-    "DEBUG": "npm run BUS -- node --inspect-brk=9400",
+    "DEBUG": "npm run BUS -- node --inspect-brk",
     "RUN": "npm run BUS -- node",
     "debug-evolution": "npm run DEBUG -- evolution.js",
     "evolution": "npm run RUN -- evolution.js",
     "start-projector": "npm run RUN -- start-projector.js",
     "debug-start-projector": "npm run DEBUG -- start-projector.js",
+    "debug-start-projector:theater": "ssh -tt theater.local 'cd Theatersoft/serial/test; npm run DEBUG -- start-projector.js'",
     "projector-hours": "npm run RUN -- projector-hours.js",
     "projector-on": "npm run RUN -- projector-on.js",
     "projector-off": "npm run RUN -- projector-off.js"

@@ -7,6 +7,7 @@ const
         export: 'Projector',
         name: 'Projector',
         config: {
+            "remotedev": "office.local",
             settings: {
                 port: '/dev/ttyUSB1',
                 speed: 9600
