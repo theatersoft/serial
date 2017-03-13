@@ -5,6 +5,8 @@ const
     pkg = require('./package.json'),
     name = pkg.name.startsWith('@theatersoft') && pkg.name.slice(13),
     DIST = process.env.DIST === 'true',
+    deleteKey = (o, k) => (k && delete o[k], o),
+    dependencies = deleteKey(pkg.distDependencies, DIST && 'remote-redux-devtools'),
     path = require('path'),
     fs = require('fs'),
     copyright = `/*\n${fs.readFileSync('COPYRIGHT', 'utf8')}\n */`,
@@ -21,10 +23,8 @@ const targets = {
         rollup.rollup({
                 entry: 'src/index',
                 external: [
-                    'redux',
-                    !DIST && 'remote-redux-devtools',
                     'util',
-                    ...Object.keys(pkg.distDependencies)
+                    ...Object.keys(dependencies)
                 ],
                 plugins: [
                     babel({
@@ -73,15 +73,14 @@ const targets = {
     package () {
         const p = Object.assign({}, pkg, {
             private: !DIST,
-            dependencies: pkg.distDependencies,
+            dependencies,
             distDependencies: undefined,
             devDependencies: undefined,
             scripts: pkg.distScripts,
             distScripts: undefined
         })
         fs.writeFileSync('dist/package.json', JSON.stringify(p, null, '  '), 'utf-8')
-        exec('cp LICENSE README.md start.js dist')
-        exec('cp dist.npmignore dist/.npmignore')
+        exec('cp LICENSE README.md start.js .npmignore dist')
     },
 
     publish () {
