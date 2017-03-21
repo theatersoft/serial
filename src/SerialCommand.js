@@ -1,10 +1,10 @@
-import SerialPort from 'serialport'
 import {EventEmitter} from '@theatersoft/bus'
 
 class SerialCommand extends EventEmitter {
     constructor ({port, speed, delimiter = '\r', raw = false}) {
         super()
         this.q = []
+        const SerialPort = require('serialport')
         this.serialPort = new SerialPort(port, {
             baudrate: speed,
             parser: raw ? SerialPort.parsers.raw : SerialPort.parsers.readline(delimiter)
