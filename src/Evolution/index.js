@@ -25,30 +25,59 @@ const dedup = (getState, _state = getState()) => f => (_next = getState()) => {
 }
 
 export default class {
-    async start ({name, config: {settings}}) {
+    //async start ({name, config: {settings}}) {
+    //    this.name = name
+    //    this.obj = await bus.registerObject(name, this)
+    //    this.store = createStore(
+    //        reducer,
+    //        {
+    //            info: {
+    //                LastUpdate: '',
+    //                [SUCCESS]: 0,
+    //                [NAK]: 0,
+    //                [FAIL]: 0,
+    //                LastError: ''
+    //            },
+    //            device: {name, value: {}}
+    //        },
+    //        devToolsEnhancer({name, realtime: true, port: 6400})
+    //    )
+    //    this.store.subscribe(dedup(select(this.store.getState))(state=>
+    //        this.obj.signal('state', state)))
+    //    codec({settings, store: this.store})
+    //    const register = () => bus.proxy('Device').registerService(this.name)
+    //    bus.registerListener(`Device.start`, register)
+    //    bus.on('reconnect', register)
+    //    register()
+    //}
+
+    start ({name, config: {settings, remotedev: hostname = 'localhost'}}) {
         this.name = name
-        this.obj = await bus.registerObject(name, this)
-        this.store = createStore(
-            reducer,
-            {
-                info: {
-                    LastUpdate: '',
-                    [SUCCESS]: 0,
-                    [NAK]: 0,
-                    [FAIL]: 0,
-                    LastError: ''
-                },
-                device: {name, value: {}}
-            },
-            devToolsEnhancer({name, realtime: true, port: 6400})
-        )
-        this.store.subscribe(dedup(select(this.store.getState))(state=>
-            this.obj.signal('state', state)))
-        codec({settings, store: this.store})
-        const register = () => bus.proxy('Device').registerService(this.name)
-        bus.registerListener(`Device.start`, register)
-        bus.on('reconnect', register)
-        register()
+        return bus.registerObject(name, this)
+            .then(obj => {
+                this.obj = obj
+                this.store = createStore(
+                    reducer,
+                    {
+                        info: {
+                            LastUpdate: '',
+                            [SUCCESS]: 0,
+                            [NAK]: 0,
+                            [FAIL]: 0,
+                            LastError: ''
+                        },
+                        device: {name, value: {}}
+                    },
+                    devToolsEnhancer({name, realtime: true, port: 6400, hostname})
+                )
+                this.store.subscribe(dedup(select(this.store.getState))(state=>
+                    this.obj.signal('state', state)))
+                codec({settings, store: this.store})
+                const register = () => bus.proxy('Device').registerService(this.name)
+                bus.registerListener(`Device.start`, register)
+                bus.on('reconnect', register)
+                register()
+            })
     }
 
     stop () {

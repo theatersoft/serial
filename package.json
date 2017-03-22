@@ -1,6 +1,6 @@
 {
   "name": "@theatersoft/serial",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Bus service module for serial devices",
   "repository": "theatersoft/serial",
   "main": "serial.js",
@@ -26,7 +26,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-preset-babili": "0.0.3",
     "rollup": "^0.41.4",
-    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-ignore": "^1.0.3",
     "rollup-plugin-strip": "^1.1.1",
