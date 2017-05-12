@@ -6,12 +6,12 @@ import bus from '@theatersoft/bus'
 import {initDevice, command} from './actions'
 
 export default class extends SerialDevice {
-    start ({name, config: {settings, commands, remotedev: hostname = 'localhost'}}) {
+    start ({name, config: {settings, commands, remotedev}}) {
         this.name = name
         this.store = createStore(
             reducer,
             {},
-            devToolsEnhancer({name, realtime: true, port: 6400, hostname})
+            remotedev && devToolsEnhancer({name, realtime: true, port: 6400, hostname: remotedev})
         )
         return super.start({name, config: {settings, commands}})
             .then(obj => {

@@ -51,7 +51,7 @@ export default class {
     //    register()
     //}
 
-    start ({name, config: {settings, remotedev: hostname = 'localhost'}}) {
+    start ({name, config: {settings, remotedev}}) {
         this.name = name
         return bus.registerObject(name, this)
             .then(obj => {
@@ -68,7 +68,7 @@ export default class {
                         },
                         device: {name, value: {}}
                     },
-                    devToolsEnhancer({name, realtime: true, port: 6400, hostname})
+                    remotedev && devToolsEnhancer({name, realtime: true, port: 6400, hostname: remotedev})
                 )
                 this.store.subscribe(dedup(select(this.store.getState))(state=>
                     this.obj.signal('state', state)))
