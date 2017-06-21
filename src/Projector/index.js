@@ -4,6 +4,7 @@ import devToolsEnhancer from 'remote-redux-devtools'
 import reducer from './reducer'
 import bus from '@theatersoft/bus'
 import {initDevice, command} from './actions'
+import {Type} from '@theatersoft/device'
 
 export default class extends SerialDevice {
     start ({name, config: {settings, commands, remotedev}}) {
@@ -15,7 +16,7 @@ export default class extends SerialDevice {
         )
         return super.start({name, config: {settings, commands}})
             .then(obj => {
-                this.store.dispatch(initDevice({name}))
+                this.store.dispatch(initDevice({name, value: undefined, type: Type.Projector}))
                 this.store.subscribe(() =>
                     obj.signal('state', this.store.getState()))
                 const register = () => bus.proxy('Device').registerService(this.name)
