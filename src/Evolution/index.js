@@ -4,6 +4,7 @@ import {createStore} from 'redux'
 import reducer from './reducer'
 import devToolsEnhancer from 'remote-redux-devtools'
 import {SUCCESS, NAK, FAIL} from './actions'
+import {Type} from '@theatersoft/device'
 
 const select = getState => () => {
     const {device} = getState()
@@ -66,7 +67,7 @@ export default class {
                             [FAIL]: 0,
                             LastError: ''
                         },
-                        device: {name, value: {}}
+                        device: {name, value: {}, type: Type.Hvac}
                     },
                     remotedev && devToolsEnhancer({name, realtime: true, port: 6400, hostname: remotedev})
                 )
