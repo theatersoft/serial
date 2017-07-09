@@ -3,6 +3,6 @@ export const
     initDevice = device => ({type: INIT_DEVICE, device})
 
 import {switchActions} from '@theatersoft/device'
-export const {ON, OFF, on, off} = switchActions
+export const {ON, OFF} = switchActions
 
 export const command = action => action.type === ON ? 'on' : action.type === OFF ? 'off' : undefined

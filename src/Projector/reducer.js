@@ -1,4 +1,4 @@
-import {INIT_DEVICE, ON, on, OFF, off} from './actions'
+import {INIT_DEVICE, ON, OFF} from './actions'
 
 export default function reducer (state, {type, device}) {
     switch (type) {
