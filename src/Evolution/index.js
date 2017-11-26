@@ -73,7 +73,7 @@ export default class {
                 )
                 this.store.subscribe(dedup(select(this.store.getState))(state=>
                     this.obj.signal('state', state)))
-                codec({settings, store: this.store})
+                this.codec = codec({settings, store: this.store})
                 const register = () => bus.proxy('Device').registerService(this.name)
                 bus.registerListener(`Device.start`, register)
                 bus.on('reconnect', register)
@@ -82,6 +82,10 @@ export default class {
     }
 
     stop () {
+        if (this.codec) {
+            this.codec.close()
+            delete this.codec
+        }
         return this.obj && bus.unregisterObject(this.name)
     }
 

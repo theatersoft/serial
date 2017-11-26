@@ -63,4 +63,5 @@ export default function ({settings, store: {dispatch, getState}}) {
             setInfo('LastError', err)
             console.log(err)
         })
+    return serial
 }

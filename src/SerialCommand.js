@@ -35,6 +35,10 @@ class SerialCommand extends EventEmitter {
         if (this.q.length === 1)
             this.serialPort.write(cmd)
     }
+
+    close () {
+        this.serialPort.close()
+    }
 }
 
 export default SerialCommand
