@@ -28,8 +28,9 @@ export default class extends SerialDevice {
 
     dispatch (action) {
         return !throttle() && this[command(action)]()
-                .then(() =>
-                    this.store.dispatch(action))
+                .then(() => {
+                    this.store.dispatch(action)
+                })
     }
 
     getState () {
