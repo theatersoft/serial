@@ -7,30 +7,36 @@ import {initDevice, command} from './actions'
 import {Type} from '@theatersoft/device'
 
 export default class extends SerialDevice {
-    start ({name, config: {settings, commands, remotedev}}) {
+    async start ({name, config: {settings, commands, remotedev}}) {
         this.name = name
         this.store = createStore(
             reducer,
             {},
             remotedev && devToolsEnhancer({name, realtime: true, port: 6400, hostname: remotedev})
         )
-        return super.start({name, config: {settings, commands}})
-            .then(obj => {
-                this.store.dispatch(initDevice({name, value: undefined, type: Type.Projector}))
-                this.store.subscribe(() =>
-                    obj.signal('state', this.store.getState()))
-                const register = () => bus.proxy('Device').registerService(this.name)
-                bus.registerListener(`Device.start`, register)
-                bus.on('reconnect', register)
-                register()
-            })
+        this.obj = await super.start({name, config: {settings, commands}})
+        this.store.dispatch(initDevice({name, value: undefined, type: Type.Projector}))
+        this.store.subscribe(() =>
+            this.obj.signal('state', this.store.getState()))
+        const register = () => bus.proxy('Device').registerService(this.name)
+        bus.registerListener(`Device.start`, register)
+        bus.on('reconnect', register)
+        register()
+    }
+
+    async stop () {
+        super.stop()
+        if (this.obj) {
+            await bus.unregisterObject(this.name)
+            delete this.obj
+        }
     }
 
     dispatch (action) {
         return !throttle() && this[command(action)]()
-                .then(() => {
-                    this.store.dispatch(action)
-                })
+            .then(() => {
+                this.store.dispatch(action)
+            })
     }
 
     getState () {
