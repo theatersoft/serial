@@ -3,18 +3,10 @@ import SerialCommand from './SerialCommand'
 
 export default class {
     start ({name, config: {settings, commands}}) {
-        const
-            serial = new SerialCommand(settings)
-                .on('open', () => {
-                    console.log(name, 'Port open')
-                })
-                .on('error', err => {
-                    console.log(name, 'error', err)
-                }),
-            makeCommand = (cmd, data) => () => {
+        const makeCommand = (cmd, data) => () => {
                 console.log(name, 'send', cmd, data)
                 return new Promise(resolve => {
-                    serial.send(data, res => {
+                    this.serial.send(data, res => {
                         console.log(name, 'response', res)
                         resolve(res)
                     })
@@ -22,6 +14,21 @@ export default class {
             }
         for (const cmd in commands)
             this[cmd] = makeCommand(cmd, commands[cmd])
+        this.serial = new SerialCommand(settings)
+            .on('open', () => {
+                console.log(name, 'Port open')
+            })
+            .on('error', err => {
+                console.log(name, 'error', err)
+            })
+
         return bus.registerObject(name, this)
+    }
+
+    stop () {
+        if (this.serial) {
+            this.serial.close()
+            delete this.serial
+        }
     }
 }
