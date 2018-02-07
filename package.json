@@ -5,7 +5,7 @@
   "repository": "theatersoft/serial",
   "main": "serial.js",
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=8.5.0"
   },
   "scripts": {
     "build": "node build.js && ls -l dist",
