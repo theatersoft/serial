@@ -35,7 +35,7 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-ignore": "^1.0.3",
-    "rollup-plugin-strip": "^1.1.1",
+    "rollup-plugin-strip": "rhuehn/rollup-plugin-strip",
     "shelljs": "^0.7.4"
   }
 }
