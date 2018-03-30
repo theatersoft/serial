@@ -19,7 +19,7 @@
     "dependencies": {
       "@theatersoft/bus": "~1",
       "redux": "^3.6.0",
-      "remote-redux-devtools": "^0.5.7",
+      "remote-redux-devtools": "^0.5.12",
       "serialport": "~4"
     },
     "devDependencies": {},
