@@ -12,7 +12,7 @@ const
     fs = require('fs'),
     writeJson = (file, json) => fs.writeFileSync(file, JSON.stringify(json, null, '  '), 'utf-8'),
     copyright = `/*\n${fs.readFileSync('COPYRIGHT', 'utf8')}\n */`,
-    rollup = require('rollup'),
+    {rollup} = require('rollup'),
     nodeResolve = require('rollup-plugin-node-resolve'),
     babel = require('rollup-plugin-babel'),
     ignore = require('rollup-plugin-ignore'),
@@ -22,7 +22,7 @@ const targets = {
     node () {
         console.log('target node')
         exec('mkdir -p dist')
-        rollup.rollup({
+        rollup({
                 entry: 'src/index',
                 external: [
                     'util',
@@ -72,6 +72,38 @@ const targets = {
             })
     },
 
+    start () {
+        console.log('target node')
+        exec('mkdir -p dist')
+        rollup({
+            entry: 'start.js',
+            external: [
+                ...Object.keys(dependencies)
+            ],
+            plugins: [
+                babel({
+                    babelrc: false,
+                    comments: !DIST,
+                    minified: DIST,
+                    plugins: [
+                        [require("babel-plugin-transform-object-rest-spread"), {useBuiltIns: true}]
+                    ]
+                }),
+                nodeResolve({jsnext: true})
+            ]
+        })
+            .then(bundle =>
+                bundle.write({
+                    dest: `dist/start.js`,
+                    format: 'cjs',
+                    moduleName: name,
+                    banner: copyright,
+                    sourceMap: DIST ? false : 'inline'
+                })
+                    .then(() => console.log(`wrote dist/start.js`))
+            )
+    },
+
     package () {
         writeJson('dist/package.json', Object.assign({}, pkg, {private: !DIST, dist: undefined}, pkg.dist))
         exec('cp LICENSE README.md .npmignore dist')
@@ -82,8 +114,9 @@ const targets = {
         exec('npm publish --access=public dist')
     },
 
-    all () {
-        target.node()
+    async all () {
+        await target.node()
+        await targets.start()
         target.package()
     }
 }
