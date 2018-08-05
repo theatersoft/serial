@@ -20,14 +20,15 @@
       "@theatersoft/bus": "~1",
       "redux": "^3.6.0",
       "remote-redux-devtools": "^0.5.12",
-      "serialport": "~4"
+      "serialport": "^6.2.2"
     },
     "devDependencies": {},
     "scripts": {
       "BUS": "env $(cat /opt/theatersoft/.config/theatersoft/.bus | xargs)",
       "RUN": "npm run BUS -- node",
       "link": "npm link --no-package-lock; npm link --no-package-lock @theatersoft/serial @theatersoft/bus",
-      "start": "npm run RUN -- start.js"
+      "start": "npm run RUN -- start.js",
+      "debug": "npm run BUS -- node --inspect-brk start.js"
     }
   },
   "devDependencies": {
